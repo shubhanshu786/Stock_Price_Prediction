@@ -9,3 +9,5 @@
 4. Model is trained to learn the trend/pattern of stock, rather than actual stock price. 
 
 5. LSTM model of keras library is being used for simplicity.
+
+6. 120 days(6 months) of time units (i.e, previous 6 month of data is being used to predict next stock price)
