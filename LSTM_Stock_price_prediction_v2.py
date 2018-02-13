@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[29]:
+# In[1]:
 
 
 import numpy as np
@@ -9,25 +9,25 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-# In[30]:
+# In[2]:
 
 
 dataframe = pd.read_csv('./HistoricalQuotes_APPLE.csv') #Apple stock price fr 10 years, downloaded from nasdaq.com
 
 
-# In[31]:
+# In[3]:
 
 
 dataframe = dataframe.iloc[::-1].reset_index(drop=True)
 
 
-# In[32]:
+# In[4]:
 
 
 dataframe = dataframe.iloc[:, 3:4].values
 
 
-# In[33]:
+# In[5]:
 
 
 from sklearn.preprocessing import MinMaxScaler
@@ -35,7 +35,7 @@ sc = MinMaxScaler(feature_range=(0,1))
 scaled_price = sc.fit_transform(dataframe)
 
 
-# In[34]:
+# In[6]:
 
 
 X_train = []
@@ -55,14 +55,14 @@ X_train, y_train = np.array(X_train), np.array(y_train)
 X_test, y_test = np.array(X_test), np.array(y_test)
 
 
-# In[35]:
+# In[7]:
 
 
 X_train = X_train.reshape((X_train.shape[0], X_train.shape[1],1))
 X_test = X_test.reshape((X_test.shape[0], X_test.shape[1],1))
 
 
-# In[36]:
+# In[8]:
 
 
 from keras.models import Sequential
@@ -71,7 +71,7 @@ from keras.layers import Dense
 from keras.layers import Dropout
 
 
-# In[37]:
+# In[9]:
 
 
 model = Sequential()
@@ -85,26 +85,26 @@ model.add(Dense(units=1))
 model.compile(loss='mean_squared_error', optimizer='adam')
 
 
-# In[38]:
+# In[10]:
 
 
 model.fit(X_train, y_train,batch_size=32, epochs=100)
 
 
-# In[39]:
+# In[14]:
 
 
 X_test  = X_test.reshape((X_test.shape[0], X_test.shape[1], 1))
-predicted_price = model.predict(X_test)
+predicted_price = model.predict(X_test[1:])
 
 
-# In[40]:
+# In[15]:
 
 
 y_test = y_test.reshape((y_test.shape[0],1))
 
 
-# In[41]:
+# In[16]:
 
 
 predicted_price = sc.inverse_transform(predicted_price)
@@ -118,13 +118,13 @@ plt.legend()
 plt.show()
 
 
-# In[16]:
+# In[17]:
 
 
 from keras.models import load_model
 
 
-# In[17]:
+# In[18]:
 
 
 model.save('apple_stock_price.h5')
